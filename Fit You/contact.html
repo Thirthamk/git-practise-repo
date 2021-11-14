@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <link rel="stylesheet" href="contact.css">
+        <title>Fit You</title>
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li>
+                    <a href="ffityou.html">Home</a>
+                </li>
+                
+                <li>
+                    <a href="Programs.html">Programs</a>
+                </li>
+                <li>
+                    
+                    <a href="contact.html">Contact me</a>
+                </li>
+            </ul>
+            
+        </nav>
+        <header>
+            <h1>Contact Us - And get excited to get on the mat.  </h1>
+            <p>xxx, yyy, vic- ****</p>
+            <p>He who has health, has hope; and he who has hope, has everything.!</p>
+        </header>
+        <h2>Feedback and general enquiry form</h2>
+        <main>
+            
+            <form class="contact-form" onsubmit="return submitMessage(event);">
+                <label for="email">Email id:</label>
+                <input type="text" name="email" id="email" required>
+                <label for="fullname">Full Name:</label>
+                <input type="text" " id="fullname">
+                
+             
+                <label for=feedback>Feedback:</label>
+                <select name="FeedbackType" id="feedback">
+                    <option value="Excellent service">Excellent service</option>
+                    <option value="complaint">Complaint</option>
+                    <option value="Enquiry">Enquiry</option>
+                </select>
+                <label for="comment">Comment or enquiry:</label>
+                <textarea name="comment" id="comment" rows="4" cols="20" required>
+                Please leave your comments/questions here
+                </textarea>
+                
+                <input type ="submit">  
+            </form>
+            
+        </main>
+        <footer>
+            <div class="formTitleSection">
+                <h3>Contact Messages</h3>
+                <button onclick="deleteMessages();">Clear Messages</button>
+            </div>
+            <div class ="form-wrapper">
+                <dl id="currentMessages">
+                </dl>
+            </div>
+        </footer>
+        <script>
+            function deleteMessages(){
+                if (window.sessionStorage.getItem("messages")){
+                    window.sessionStorage.removeItem("messages");
+                }
+
+                renderMessages();
+            }
+            function submitMessage(event){
+                event.preventDefault();
+                const email = document.getElementById("email").value;
+                const fullname = document.getElementById("fullname").value;
+                const feedback = document.getElementById("feedback").value;
+                const comment = document.getElementById("comment").value;
+
+                const messageObject = {
+                    email,fullname,feedback,comment
+                }
+
+                let currentMessages = [];
+
+                if(window.sessionStorage.getItem("messages")){
+                    currentMessages = JSON.parse(window.sessionStorage.getItem("messages"));
+                }
+
+                currentMessages.push(messageObject);
+                window.sessionStorage.setItem("messages", JSON.stringify(currentMessages));
+                renderMessages();
+            }
+
+            function renderMessages(){
+                let currentMessages = [];
+                if(window.sessionStorage.getItem("messages")){
+                    currentMessages= JSON.parse(window.sessionStorage.getItem("messages"));
+            }
+
+            let listItems = [];
+            for(let i = 0; i < currentMessages.length ; i++ ){
+                let listItem = " ";
+                const currentMessage = currentMessages[i];
+                listItem += `<dt>${currentMessage.fullname}-${currentMessage.email}</dt>`;
+                listItem += `<dd>${currentMessage.feedback}:${currentMessage.comment}</dd>`;
+                listItem += `<br />`;
+                listItems.push(listItem);
+            }
+            let descList = document.getElementById('currentMessages');
+            descList.innerHTML = listItems.join('');
+
+            }
+            renderMessages();
+
+
+        </script>
+        <footer class = "bottomline">
+            For a better health and lifestyle, please feel free to contact me.
+        </footer>
+
+    </body>
+</html>
